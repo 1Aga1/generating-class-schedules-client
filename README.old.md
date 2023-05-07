@@ -1,2 +1,0 @@
-# generating class schedules-client
- 
