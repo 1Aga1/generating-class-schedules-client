@@ -1,0 +1,15 @@
+.layout {
+  min-height: 100vh;
+  min-width: 100vw;
+
+  .header {
+    background-color: #fff;
+  }
+
+  .content {
+    height: 100%;
+    margin: 20px;
+    overflow: initial;
+    z-index: 500;
+  }
+}
