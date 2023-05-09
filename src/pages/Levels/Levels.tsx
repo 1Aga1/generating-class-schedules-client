@@ -19,7 +19,8 @@ const Levels = () => {
             setTableData(res.data.map(item => {
                 return {
                     key: item.id,
-                    text: item.text
+                    text: item.text,
+                    subjects: item.subjects
                 }
             }))
         }).catch((e) => {
@@ -34,6 +35,7 @@ const Levels = () => {
             setTableData([...tableData, {
                 key: res.data.id,
                 text: res.data.text,
+                subjects: res.data.subjects
             }])
             setShowModal(false);
         }).catch(e => {
@@ -51,6 +53,7 @@ const Levels = () => {
                     {
                         key: res.data.id,
                         text: res.data.text,
+                        subjects: res.data.subjects
                     }
                     : item
             }))
@@ -112,6 +115,7 @@ const Levels = () => {
                     rowClassName='tableRow'
                     loading={loadingTable}
                     pagination={{showSizeChanger: true}}
+                    bordered
                 />
             </Card>
             <LevelModal

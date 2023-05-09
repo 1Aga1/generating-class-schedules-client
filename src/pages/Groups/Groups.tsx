@@ -110,6 +110,7 @@ const Groups = () => {
                     rowClassName='tableRow'
                     loading={loadingTable}
                     pagination={{showSizeChanger: true}}
+                    bordered
                 />
             </Card>
             <GroupModal

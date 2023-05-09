@@ -107,6 +107,7 @@ const Schedules = () => {
                     rowClassName='tableRow'
                     loading={loadingTable}
                     pagination={{showSizeChanger: true}}
+                    bordered
                 />
             </Card>
             <ScheduleModal
