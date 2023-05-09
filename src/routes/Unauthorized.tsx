@@ -1,11 +1,11 @@
 import React, {FC} from 'react';
 import {IRoute} from "./IRoute";
 import {Navigate} from "react-router-dom";
-import account from "../store/account/account";
+import user from "../store/user/user";
 
 const Unauthorized: FC<IRoute> = ({component}) => {
     return (
-        !account.isAuth ? (() => component)() : <Navigate to='/dashboard'/>
+        !user.isAuth ? (() => component)() : <Navigate to='/dashboard'/>
     );
 };
 

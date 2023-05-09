@@ -3,7 +3,7 @@ import {observer} from "mobx-react-lite";
 import {LoadingOutlined} from "@ant-design/icons";
 import {BrowserRouter} from "react-router-dom";
 import Routes from "./routes/Routes";
-import account from "./store/account/account";
+import user from "./store/user/user";
 import Layout from "./components/Layout/Layout";
 import {IMenu, menu} from "./constants/menu";
 
@@ -16,7 +16,7 @@ function App() {
         setLoading(true)
 
         try {
-            await account.check()
+            await user.checkout()
         } catch (e) {}
 
         setLoading(false)
@@ -35,7 +35,11 @@ function App() {
             </div>
         </> : <>
             <BrowserRouter>
-                <Layout menu={menu}><Routes/></Layout>
+                {
+                    user.isAuth
+                    ? <Layout menu={menu}><Routes/></Layout>
+                    : <Routes/>
+                }
             </BrowserRouter>
         </>
     );
