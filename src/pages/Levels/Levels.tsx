@@ -1,9 +1,11 @@
 import React, {useEffect, useState} from 'react';
-import {Button, Card, message, Table} from "antd";
+import {Button, Card, message, Table, Typography} from "antd";
 import {getColumns, ITableDataType} from "./tableProps";
 import {ILevelForm} from "../../types/forms";
 import LevelApi from "../../api/level-api";
 import LevelModal from "../../components/LevelModal/LevelModal";
+
+const {Title} = Typography;
 
 const Levels = () => {
     const [tableData, setTableData] = useState<ITableDataType[]>([]);
@@ -103,7 +105,8 @@ const Levels = () => {
     return (
         <>
             <Card>
-                <div style={{marginBottom: 20, textAlign: "right"}}>
+                <div className='pageHeader'>
+                    <Title level={4}>Уровни подготовки</Title>
                     <Button type="primary" onClick={() => {
                         setLevelData(undefined)
                         setShowModal(true)

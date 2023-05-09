@@ -1,10 +1,12 @@
 import React, {useEffect, useState} from 'react';
-import {Button, Card, message, Table} from "antd";
+import {Button, Card, message, Table, Typography} from "antd";
 import {getColumns, ITableDataType} from "./tableProps";
 import SchedulesApi from "../../api/schedules-api";
 import ScheduleModal from "../../components/ScheduleModal/ScheduleModal";
 import {IScheduleForm} from "../../types/forms";
 import dayjs from "dayjs";
+
+const {Title} = Typography;
 
 const Schedules = () => {
     const [tableData, setTableData] = useState<ITableDataType[]>([]);
@@ -95,7 +97,8 @@ const Schedules = () => {
     return (
         <>
             <Card>
-                <div style={{marginBottom: 20, textAlign: "right"}}>
+                <div className='pageHeader'>
+                    <Title level={4}>Расписания</Title>
                     <Button type="primary" onClick={() => {
                         setScheduleData(undefined)
                         setShowModal(true)
