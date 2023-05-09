@@ -5,7 +5,7 @@ import user from "../store/user/user";
 
 const Unauthorized: FC<IRoute> = ({component}) => {
     return (
-        !user.isAuth ? (() => component)() : <Navigate to='/dashboard'/>
+        !user.isAuth ? (() => component)() : <Navigate to='/schedules'/>
     );
 };
 

@@ -1,8 +1,5 @@
-import {MenuProps} from "antd";
 import {Link} from "react-router-dom";
 import React from "react";
-
-export type MenuItem = Required<MenuProps>['items'][number];
 
 export interface IMenu {
     key: string,
