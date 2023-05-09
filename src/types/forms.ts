@@ -11,3 +11,8 @@ export interface IGroupForm {
     levelId: number,
     name: string
 }
+
+export interface ISubjectForm {
+    name: string,
+    office: string
+}

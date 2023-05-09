@@ -6,6 +6,7 @@ import Schedule from "../pages/Schedule/Schedule";
 import Schedules from "../pages/Schedules/Schedules";
 import Groups from "../pages/Groups/Groups";
 import Authorization from "../pages/Authorization/Authorization";
+import Subjects from "../pages/Subjects/Subjects";
 
 const Routes = () => {
     return useRoutes([
@@ -14,16 +15,20 @@ const Routes = () => {
             element: <Unauthorized component={<Authorization/>}/>
         },
         {
-            path: '/Schedules',
+            path: '/schedules',
             element: <Authorized component={<Schedules/>}/>,
         },
         {
-            path: '/Schedule/:number',
+            path: '/schedule/:number',
             element: <Authorized component={<Schedule/>}/>,
         },
         {
-            path: '/Groups',
+            path: '/groups',
             element: <Authorized component={<Groups/>}/>
+        },
+        {
+            path: '/subjects',
+            element: <Authorized component={<Subjects/>}/>
         },
         {
             path: '/*',
