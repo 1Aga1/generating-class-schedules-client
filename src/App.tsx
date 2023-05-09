@@ -22,8 +22,6 @@ function App() {
         setLoading(false)
     }
 
-    const filterMenu = () => {}
-
     useEffect(() => {
         checkAuth().then();
     }, [])

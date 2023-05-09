@@ -18,18 +18,15 @@ export const menu: IMenu[] = [
         key: '/Groups',
         locations: ['groups', 'group'],
         label: <Link to='/groups'>Классы</Link>,
-        isAuth: true
     },
     {
         key: '/subjects',
         locations: ['subjects'],
         label: <Link to='/subjects'>Предметы</Link>,
-        isAuth: true
     },
     {
         key: '/levels',
         locations: ['levels'],
         label: <Link to='/levels'>Уровень подготовки</Link>,
-        isAuth: true
     }
 ]

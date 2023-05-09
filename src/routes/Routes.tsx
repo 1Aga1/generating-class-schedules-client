@@ -7,6 +7,7 @@ import Schedules from "../pages/Schedules/Schedules";
 import Groups from "../pages/Groups/Groups";
 import Authorization from "../pages/Authorization/Authorization";
 import Subjects from "../pages/Subjects/Subjects";
+import Levels from "../pages/Levels/Levels";
 
 const Routes = () => {
     return useRoutes([
@@ -29,6 +30,11 @@ const Routes = () => {
         {
             path: '/subjects',
             element: <Authorized component={<Subjects/>}/>
+        },
+        {
+            path: '/levels',
+            element: <Authorized component={<Levels/>}/>
+
         },
         {
             path: '/*',

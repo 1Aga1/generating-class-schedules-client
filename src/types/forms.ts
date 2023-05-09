@@ -16,3 +16,11 @@ export interface ISubjectForm {
     name: string,
     office: string
 }
+
+export interface ILevelForm {
+    id: number,
+    text: string,
+    subjects?: {
+        value: number,
+    }[]
+}

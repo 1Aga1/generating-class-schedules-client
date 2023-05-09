@@ -1,9 +1,16 @@
 import {IGroup} from "./group";
-import {ISubject} from "./subject";
 
 export interface ILevel {
     id: number,
     text: string,
     groups: IGroup[]
-    subjects: ISubject[]
+    subjects: {
+        id: number
+        level: number,
+        subject: {
+            id: number,
+            name: string,
+            office: string
+        }
+    }[]
 }
