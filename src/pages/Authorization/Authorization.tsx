@@ -22,7 +22,7 @@ const Authorization = () => {
 
         try {
             await user.login(username, password)
-            navigate('/schedules')
+            navigate('/Schedules')
         } catch (error) {
             const e = error as AxiosError
             if (e.response?.data === 'Wrong username or password') {

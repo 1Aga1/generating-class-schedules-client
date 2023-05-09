@@ -3,7 +3,11 @@ export interface IAuthForm {
     password: string
 }
 
-
 export interface IScheduleForm {
     date: any
+}
+
+export interface IGroupForm {
+    levelId: number,
+    name: string
 }

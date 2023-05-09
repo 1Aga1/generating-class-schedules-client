@@ -10,12 +10,12 @@ export interface IMenu {
 
 export const menu: IMenu[] = [
     {
-        key: '/schedules',
+        key: '/Schedules',
         locations: ['schedules', 'schedule'],
         label: <Link to='/schedules'>Расписания</Link>
     },
     {
-        key: '/groups',
+        key: '/Groups',
         locations: ['groups', 'group'],
         label: <Link to='/groups'>Классы</Link>,
         isAuth: true

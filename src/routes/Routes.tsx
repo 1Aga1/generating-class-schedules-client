@@ -2,10 +2,10 @@ import React from 'react';
 import {Navigate, useRoutes} from "react-router-dom";
 import Unauthorized from "./Unauthorized";
 import Authorized from "./Authorized";
-import Schedule from "../pages/schedule/schedule";
-import Schedules from "../pages/schedules/schedules";
-import Groups from "../pages/groups/Groups";
-import Authorization from "../pages/authorization/Authorization";
+import Schedule from "../pages/Schedule/Schedule";
+import Schedules from "../pages/Schedules/Schedules";
+import Groups from "../pages/Groups/Groups";
+import Authorization from "../pages/Authorization/Authorization";
 
 const Routes = () => {
     return useRoutes([
@@ -14,15 +14,15 @@ const Routes = () => {
             element: <Unauthorized component={<Authorization/>}/>
         },
         {
-            path: '/schedules',
+            path: '/Schedules',
             element: <Authorized component={<Schedules/>}/>,
         },
         {
-            path: '/schedule/:number',
+            path: '/Schedule/:number',
             element: <Authorized component={<Schedule/>}/>,
         },
         {
-            path: '/groups',
+            path: '/Groups',
             element: <Authorized component={<Groups/>}/>
         },
         {
