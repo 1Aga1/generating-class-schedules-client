@@ -3,15 +3,10 @@
   flex-wrap: wrap;
   .groupCard {
     width: 200px;
-    margin: 10px;
+    margin: 20px;
     text-align: center;
     .card {
-      width: 100%;
       padding: 5px 0;
-      .subject {
-        display: flex;
-        align-items: center;
-      }
     }
   }
 }

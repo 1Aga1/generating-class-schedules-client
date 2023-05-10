@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {Card, message, Select, Skeleton, Typography} from "antd";
+import {Card, Descriptions, message, Select, Skeleton, Typography} from "antd";
 import {useNavigate, useParams} from "react-router-dom";
 import SchedulesApi from "../../api/schedules-api";
 import {ISchedule} from "../../types/schedule";
@@ -87,43 +87,41 @@ const Schedule = () => {
                         scheduleData && groupList && levelsSubjects
                             ?
                             groupList?.map((group, index) => (
-                                <Card title={group.name} className={style.groupCard} key={index}>
+                                <Descriptions title={group.name} className={style.groupCard} key={index} column={1}>
                                     {
                                         subjectNumber.map((item, index) => (
-                                            <Card.Grid className={style.card} hoverable={false} key={index}>
-                                                <div className={style.subject}>
-                                                    <Text style={{margin: '0 8px'}}>{item}</Text>
-                                                    <Select
-                                                        style={{width: '100%'}}
-                                                        mode="multiple"
-                                                        options={
-                                                            levelsSubjects?.filter(subject =>
-                                                                subject.level === group.level.id)
-                                                            .map(subject => {
-                                                                return {
-                                                                    value: subject.subject.id,
-                                                                    label: subject.subject.name + ' - ' + subject.subject.office,
-                                                                    number: item,
-                                                                    groupId: group.id
-                                                                }
+                                            <Descriptions.Item className={style.card} label={item} key={index}>
+                                                <Select
+                                                    showSearch={false}
+                                                    style={{width: '100%'}}
+                                                    mode="multiple"
+                                                    options={
+                                                        levelsSubjects?.filter(subject =>
+                                                            subject.level === group.level.id)
+                                                        .map(subject => {
+                                                            return {
+                                                                value: subject.subject.id,
+                                                                label: subject.subject.name + ' - ' + subject.subject.office,
+                                                                number: item,
+                                                                groupId: group.id
+                                                            }
+                                                        })
+                                                    }
+                                                    onSelect={addSubject}
+                                                    onDeselect={removeSubject}
+                                                    defaultValue={
+                                                        scheduleData?.params
+                                                            .filter(param => param.number === item
+                                                            && param.group_id == group.id)
+                                                            .map(param => {
+                                                                return param.subject_id
                                                             })
-                                                        }
-                                                        onSelect={addSubject}
-                                                        onDeselect={removeSubject}
-                                                        defaultValue={
-                                                            scheduleData?.params
-                                                                .filter(param => param.number === item
-                                                                && param.group_id == group.id)
-                                                                .map(param => {
-                                                                    return param.subject_id
-                                                                })
-                                                        }
-                                                    />
-                                                </div>
-                                            </Card.Grid>
+                                                    }
+                                                />
+                                            </Descriptions.Item>
                                         ))
                                     }
-                                </Card>
+                                </Descriptions >
                             ))
                             :
                             <Skeleton active></Skeleton>
