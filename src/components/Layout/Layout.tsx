@@ -32,7 +32,6 @@ const Layout: FC<ILayoutProps> = ({menu, children}) => {
                     items={menu}
                     selectedKeys={[selectedMenu]}
                 />
-                <Button danger icon={<LogoutOutlined />} onClick={user.logout}>Выйти</Button>
             </Header>
             <Content className={style.content}>
                 {children}

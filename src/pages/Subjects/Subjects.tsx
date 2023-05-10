@@ -114,6 +114,7 @@ const Subjects = () => {
                     loading={loadingTable}
                     pagination={{showSizeChanger: true}}
                     bordered
+                    scroll={{x: 400}}
                 />
             </Card>
             <SubjectModal

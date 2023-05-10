@@ -114,6 +114,7 @@ const Groups = () => {
                     loading={loadingTable}
                     pagination={{showSizeChanger: true}}
                     bordered
+                    scroll={{x: 400}}
                 />
             </Card>
             <GroupModal

@@ -5,10 +5,13 @@ import SchedulesApi from "../../api/schedules-api";
 import ScheduleModal from "../../components/ScheduleModal/ScheduleModal";
 import {IScheduleForm} from "../../types/forms";
 import dayjs from "dayjs";
+import {useNavigate} from "react-router-dom";
 
 const {Title} = Typography;
 
 const Schedules = () => {
+    const navigate = useNavigate();
+
     const [tableData, setTableData] = useState<ITableDataType[]>([]);
     const [loadingTable, setLoadingTable] = useState<boolean>(false);
     const [showModal, setShowModal] = useState<boolean>(false);
@@ -90,6 +93,10 @@ const Schedules = () => {
         })
     };
 
+    const onScheduleClick = (scheduleId: number) => {
+        navigate('/schedule/'+scheduleId);
+    }
+
     useEffect(() => {
         fetchSchedules()
     }, [])
@@ -111,6 +118,12 @@ const Schedules = () => {
                     loading={loadingTable}
                     pagination={{showSizeChanger: true}}
                     bordered
+                    scroll={{x: 400}}
+                    onRow={(record: ITableDataType) => {
+                        return {
+                            onClick: () => onScheduleClick(record.key)
+                        }
+                    }}
                 />
             </Card>
             <ScheduleModal
