@@ -19,7 +19,7 @@ const SubjectModal: FC<ISubjectModalProps> = ({open, onClose, initialValues, onS
             footer={null}
         >
             <Form labelCol={{span: 8}} wrapperCol={{span: 16}} labelAlign='left' onFinish={onSubmit} initialValues={initialValues}>
-                <Form.Item name='name' label='Предмет' rules={[requiredFormItem]}>
+                <Form.Item name='name' label='Название' rules={[requiredFormItem]}>
                     <Input/>
                 </Form.Item>
                 <Form.Item name='office' label='Кабинет' rules={[requiredFormItem]}>

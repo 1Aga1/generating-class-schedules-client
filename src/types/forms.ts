@@ -24,3 +24,7 @@ export interface ILevelForm {
         value: number,
     }[]
 }
+
+export interface IAddGroupForm {
+    groupId: number
+}

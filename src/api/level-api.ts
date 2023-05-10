@@ -1,5 +1,5 @@
 import request from "./index";
-import {ILevel} from "../types/level";
+import {ILevel, ILevelSubject} from "../types/level";
 
 
 class LevelApi {
@@ -25,6 +25,8 @@ class LevelApi {
     removeSubject = (level_id: number, subject_id: number) => request.delete('/level_subject/remove', {
         level_id, subject_id
     })
+
+    getLevelSubjects = () => request.get<ILevelSubject[]>('/level_subjects')
 }
 
 export default new LevelApi()

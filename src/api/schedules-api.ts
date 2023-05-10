@@ -5,7 +5,7 @@ import {ISchedule} from "../types/schedule";
 class SchedulesApi {
     getSchedules = () => request.get<ISchedule[]>('/schedules');
 
-    getSchedule = (scheduleId: number) => request.get<ISchedule>('/schedule/'+scheduleId);
+    getSchedule = (scheduleId: string | number) => request.get<ISchedule>('/schedule/'+scheduleId);
 
     createSchedule = (date: string) => request.post<ISchedule>('/schedule/create', {
         date

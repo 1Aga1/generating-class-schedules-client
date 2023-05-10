@@ -119,11 +119,6 @@ const Schedules = () => {
                     pagination={{showSizeChanger: true}}
                     bordered
                     scroll={{x: 400}}
-                    onRow={(record: ITableDataType) => {
-                        return {
-                            onClick: () => onScheduleClick(record.key)
-                        }
-                    }}
                 />
             </Card>
             <ScheduleModal
@@ -132,7 +127,7 @@ const Schedules = () => {
                 onSubmit={scheduleData ? editSchedule : createSchedule}
                 loading={loadingButton}
                 initialValues={scheduleData}
-                titleText={scheduleData ? 'Расписание от '+dayjs(scheduleData.date).format('DD.MM.YYYY') : 'Новое расписание'}
+                titleText={scheduleData ? 'Расписание на '+dayjs(scheduleData.date).format('DD.MM.YYYY') : 'Новое расписание'}
                 submitText={scheduleData ? 'Изменить' : 'Добавить'}
             />
         </>

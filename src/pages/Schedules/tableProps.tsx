@@ -2,6 +2,7 @@ import {ColumnsType} from "antd/es/table";
 import {Button, Space} from "antd";
 import dayjs from "dayjs";
 import {DeleteOutlined, EditOutlined} from "@ant-design/icons";
+import {Link} from "react-router-dom";
 
 export interface ITableDataType {
     key: number,
@@ -20,7 +21,9 @@ export const getColumns = (
                 render: (_, record) => {
                     return (
                         dayjs(record.date).isValid()
-                        ? dayjs(record.date).format('DD.MM.YYYY') : 'Не верный формат даты'
+                            ? <Link to={'/schedule/'+record.key}>{dayjs(record.date).format('DD.MM.YYYY')}</Link>
+                            : <Link to={'/schedule/'+record.key}>Не верный формат даты</Link>
+
                     )
                 }
             },

@@ -1,0 +1,34 @@
+.schedule {
+  display: flex;
+  flex-wrap: wrap;
+  .groupCard {
+    width: 200px;
+    margin: 10px;
+    text-align: center;
+    .card {
+      width: 100%;
+      padding: 5px 0;
+      .subject {
+        display: flex;
+        align-items: center;
+      }
+    }
+  }
+}
+
+@media (max-width: 742px) {
+  .schedule {
+    .groupCard {
+      width: 45%;
+    }
+  }
+}
+
+@media (max-width: 524px) {
+  .schedule {
+    justify-content: center;
+    .groupCard {
+      width: 100%;
+    }
+  }
+}
