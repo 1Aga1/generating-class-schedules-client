@@ -1,9 +1,12 @@
 import {Content, Header} from 'antd/es/layout/layout';
 import React, {FC, ReactNode, useEffect, useState} from 'react';
-import {Menu, Layout as AntLayout} from "antd";
+import {Menu, Layout as AntLayout, Button} from "antd";
 import {IMenu} from "../../constants/menu";
 import {useLocation} from "react-router-dom";
 import style from './Layout.module.scss';
+import {LogoutOutlined} from "@ant-design/icons";
+import {observer} from "mobx-react-lite";
+import user from "../../store/user/user";
 
 interface ILayoutProps {
     menu: IMenu[],
@@ -29,6 +32,7 @@ const Layout: FC<ILayoutProps> = ({menu, children}) => {
                     items={menu}
                     selectedKeys={[selectedMenu]}
                 />
+                <Button danger icon={<LogoutOutlined />} onClick={user.logout}>Выйти</Button>
             </Header>
             <Content className={style.content}>
                 {children}
@@ -37,4 +41,4 @@ const Layout: FC<ILayoutProps> = ({menu, children}) => {
     );
 };
 
-export default Layout;
+export default observer(Layout);
