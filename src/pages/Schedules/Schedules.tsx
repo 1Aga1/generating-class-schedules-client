@@ -5,13 +5,12 @@ import SchedulesApi from "../../api/schedules-api";
 import ScheduleModal from "../../components/ScheduleModal/ScheduleModal";
 import {IScheduleForm} from "../../types/forms";
 import dayjs from "dayjs";
-import {useNavigate} from "react-router-dom";
+import {saveBlobToFile} from "../../utils/saveBlobToFile";
+import schedulesApi from "../../api/schedules-api";
 
 const {Title} = Typography;
 
 const Schedules = () => {
-    const navigate = useNavigate();
-
     const [tableData, setTableData] = useState<ITableDataType[]>([]);
     const [loadingTable, setLoadingTable] = useState<boolean>(false);
     const [showModal, setShowModal] = useState<boolean>(false);
@@ -93,8 +92,17 @@ const Schedules = () => {
         })
     };
 
-    const onScheduleClick = (scheduleId: number) => {
-        navigate('/schedule/'+scheduleId);
+    const downloadSchedule = async (scheduleId: number) => {
+        message.loading('Выгрузка файла')
+
+        try {
+            const res = await schedulesApi.downloadSchedule(scheduleId)
+            saveBlobToFile(res.data, `Расписание на ${dayjs(tableData.find(item => item.key === scheduleId)?.date).format('DD.MM.YYYY')}.docx`)
+        } catch (_) {
+            message.error('Ошибка выгрузки документа!')
+        }
+
+        message.destroy();
     }
 
     useEffect(() => {
@@ -112,7 +120,7 @@ const Schedules = () => {
                     }}>Создать расписание</Button>
                 </div>
                 <Table
-                    columns={getColumns(onEditSchedule, removeSchedule)}
+                    columns={getColumns(onEditSchedule, removeSchedule, downloadSchedule)}
                     dataSource={tableData}
                     rowClassName='tableRow'
                     loading={loadingTable}

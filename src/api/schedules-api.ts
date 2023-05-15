@@ -18,6 +18,8 @@ class SchedulesApi {
     removeSchedule = (schedule_id: number) => request.delete('/schedule/remove', {
         schedule_id
     })
-}
 
+    downloadSchedule = (scheduleId: number) => request.getBlob<Blob>('/document/'+scheduleId)
+}
+// eslint-disable-next-line
 export default new SchedulesApi()

@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {Card, Descriptions, message, Select, Skeleton, Typography} from "antd";
+import {Button, Card, Descriptions, message, Select, Skeleton, Tooltip, Typography} from "antd";
 import {useNavigate, useParams} from "react-router-dom";
 import SchedulesApi from "../../api/schedules-api";
 import {ISchedule} from "../../types/schedule";
@@ -10,8 +10,11 @@ import style from './Schedule.module.scss';
 import LevelApi from "../../api/level-api";
 import {ILevelSubject} from "../../types/level";
 import ScheduleParamApi from "../../api/scheduleParam-api";
+import {DownloadOutlined} from "@ant-design/icons";
+import schedulesApi from "../../api/schedules-api";
+import {saveBlobToFile} from "../../utils/saveBlobToFile";
 
-const {Title, Text} = Typography;
+const {Title} = Typography;
 
 const Schedule = () => {
     const {number} = useParams();
@@ -54,6 +57,7 @@ const Schedule = () => {
         fetchSchedule().then();
         fetchGroups().then();
         fetchLevelSubjects().then();
+        // eslint-disable-next-line
     }, [number])
 
     const addSubject = async (value: any, option: any) => {
@@ -72,6 +76,19 @@ const Schedule = () => {
         }
     }
 
+    const downloadSchedule = async () => {
+        message.loading('Выгрузка файла')
+
+        try {
+            const res = await schedulesApi.downloadSchedule(scheduleData?.id!)
+            saveBlobToFile(res.data, `Расписание на ${dayjs(scheduleData?.date).format('DD.MM.YYYY')}.docx`)
+        } catch (_) {
+            message.error('Ошибка выгрузки документа!')
+        }
+
+        message.destroy();
+    }
+
     return (
         <>
             <Card>
@@ -79,6 +96,14 @@ const Schedule = () => {
                     {
                         scheduleData
                             ? <Title level={4}>Расписание на {dayjs(scheduleData?.date).format('DD.MM.YYYY')}</Title>
+                            : <Skeleton.Input active />
+                    }
+                    {
+                        scheduleData
+                            ?
+                            <Tooltip title='Выгрузить в Word'>
+                                <Button onClick={downloadSchedule} icon={<DownloadOutlined/>}></Button>
+                            </Tooltip>
                             : <Skeleton.Input active />
                     }
                 </div>
@@ -112,7 +137,7 @@ const Schedule = () => {
                                                     defaultValue={
                                                         scheduleData?.params
                                                             .filter(param => param.number === item
-                                                            && param.group_id == group.id)
+                                                            && param.group_id === group.id)
                                                             .map(param => {
                                                                 return param.subject_id
                                                             })
