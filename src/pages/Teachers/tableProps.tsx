@@ -4,9 +4,7 @@ import {DeleteOutlined, EditOutlined} from "@ant-design/icons";
 
 export interface ITableDataType {
     key: number,
-    name: string,
-    teacherFullName: string,
-    office: string,
+    fullname: string,
 }
 
 export const getColumns = (
@@ -15,19 +13,9 @@ export const getColumns = (
 ) => {
     return [
             {
-                title: 'Название',
-                dataIndex: 'name',
-                key: 'name',
-            },
-            {
-                title: 'Учитель',
-                dataIndex: 'teacherFullName',
-                key: 'teacherFullName',
-            },
-            {
-                title: 'Кабинет',
-                dataIndex: 'office',
-                key: 'office',
+                title: 'ФИО',
+                dataIndex: 'fullname',
+                key: 'fullname',
             },
             {
                 title: 'Действия',

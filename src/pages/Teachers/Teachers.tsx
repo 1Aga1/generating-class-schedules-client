@@ -1,29 +1,27 @@
 import React, {useEffect, useState} from 'react';
 import {Button, Card, message, Table, Typography} from "antd";
 import {getColumns, ITableDataType} from "./tableProps";
-import {ISubjectForm} from "../../types/forms";
-import SubjectApi from "../../api/subject-api";
-import SubjectModal from "../../components/SubjectModal/SubjectModal";
+import {ITeacherForm} from "../../types/forms";
+import TeacherModal from "../../components/TeacherModal/TeacherModal";
+import TeacherApi from "../../api/teacher-api";
 
 const {Title} = Typography;
 
-const Subjects = () => {
+const Teachers = () => {
     const [tableData, setTableData] = useState<ITableDataType[]>([]);
     const [loadingTable, setLoadingTable] = useState<boolean>(false);
     const [showModal, setShowModal] = useState<boolean>(false);
     const [loadingButton, setLoadingButton] = useState<boolean>(false);
-    const [subjectData, setSubjectData] = useState<ISubjectForm>();
-    const [editSubjectId, setEditSubjectId] = useState<number>(0);
+    const [teacherData, setTeacherData] = useState<ITeacherForm>();
+    const [editTeacherId, setEditTeacherId] = useState<number>(0);
 
     const fetchSubjects = () => {
         setLoadingTable(true);
-        SubjectApi.getSubjects().then(res => {
+        TeacherApi.getTeachers().then(res => {
             setTableData(res.data.map(item => {
                 return {
                     key: item.id,
-                    name: item.name,
-                    teacherFullName: item.teacher.fullname,
-                    office: item.office
+                    fullname: item.fullname,
                 }
             }))
         }).catch((e) => {
@@ -32,66 +30,60 @@ const Subjects = () => {
         setLoadingTable(false);
     };
 
-    const createSubject = (data: ISubjectForm) => {
+    const createTeacher = (data: ITeacherForm) => {
         setLoadingButton(true);
-        SubjectApi.createSubject(data.name, data.office).then(res => {
+        TeacherApi.createTeacher(data.fullname).then(res => {
             setTableData([...tableData, {
                 key: res.data.id,
-                name: res.data.name,
-                teacherFullName: res.data.teacher.fullname,
-                office: res.data.office,
+                fullname: res.data.fullname,
             }])
             setShowModal(false);
         }).catch(e => {
-            message.error('Ошибка создания предмета!');
+            message.error('Ошибка создания учителя!');
         })
         setLoadingButton(false);
     }
 
-    const editSubject = (data: ISubjectForm) => {
+    const editTeacher= (data: ITeacherForm) => {
         setLoadingButton(true);
-        SubjectApi.editSubject(editSubjectId, data.name, data.office).then(res => {
+        TeacherApi.editTeacher(editTeacherId, data.fullname).then(res => {
             setTableData(tableData.map(item => {
-                return item.key === editSubjectId
+                return item.key === editTeacherId
                     ?
                     {
                         key: res.data.id,
-                        name: res.data.name,
-                        teacherFullName: res.data.teacher.fullname,
-                        office: res.data.office,
+                        fullname: res.data.fullname,
                     }
                     : item
             }))
             setShowModal(false);
         }).catch(e => {
-            if (e.response.data === 'Subject not found') message.error('Предмет не найден!');
-            else message.error('Ошибка редактирования предмета!');
+            if (e.response.data === 'Teacher not found') message.error('Учитель не найден!');
+            else message.error('Ошибка редактирования учителя!');
         })
         setLoadingButton(false);
     };
 
-    const onEditSubject = (subjectId: number) => {
+    const onEditTeacher = (teacherId: number) => {
         message.loading('Загрузка данных');
-        SubjectApi.getSubject(subjectId).then(res => {
-            setSubjectData({
-                name: res.data.name,
-                office: res.data.office,
-                teacherId: res.data.teacher.id
+        TeacherApi.getTeacher(teacherId).then(res => {
+            setTeacherData({
+                fullname: res.data.fullname,
             });
             message.destroy();
             setShowModal(true);
-            setEditSubjectId(subjectId)
+            setEditTeacherId(teacherId)
         }).catch(e => {
             message.destroy();
             message.error('Ошибка загрузки данных!');
         });
     }
 
-    const removeSubject = (subjectId: number) => {
-        message.loading('Удаление предмета');
-        SubjectApi.removeSubject(subjectId).then(res => {
+    const removeTeacher = (teacherId: number) => {
+        message.loading('Удаление учителя');
+        TeacherApi.removeTeacher(teacherId).then(res => {
             message.destroy();
-            setTableData(tableData.filter(item => item.key !== subjectId));
+            setTableData(tableData.filter(item => item.key !== teacherId));
         }).catch(e => {
             message.error('Ошибка удаления!');
         })
@@ -105,14 +97,14 @@ const Subjects = () => {
         <>
             <Card>
                 <div className='pageHeader'>
-                    <Title level={4}>Предметы</Title>
+                    <Title level={4}>Учителя</Title>
                     <Button type="primary" onClick={() => {
-                        setSubjectData(undefined)
+                        setTeacherData(undefined)
                         setShowModal(true)
-                    }}>Создать предмет</Button>
+                    }}>Добавить учителя</Button>
                 </div>
                 <Table
-                    columns={getColumns(onEditSubject, removeSubject)}
+                    columns={getColumns(onEditTeacher, removeTeacher)}
                     dataSource={tableData}
                     rowClassName='tableRow'
                     loading={loadingTable}
@@ -121,17 +113,17 @@ const Subjects = () => {
                     scroll={{x: 400}}
                 />
             </Card>
-            <SubjectModal
+            <TeacherModal
                 open={showModal}
                 onClose={() => {setShowModal(false)}}
-                onSubmit={subjectData ? editSubject : createSubject}
+                onSubmit={teacherData ? editTeacher : createTeacher}
                 loading={loadingButton}
-                initialValues={subjectData}
-                titleText={subjectData ? subjectData.name : 'Новый предмет'}
-                submitText={subjectData ? 'Изменить' : 'Добавить'}
+                initialValues={teacherData}
+                titleText={teacherData ? teacherData.fullname : 'Новый учитель'}
+                submitText={teacherData ? 'Изменить' : 'Добавить'}
             />
         </>
     );
 };
 
-export default Subjects;
+export default Teachers;

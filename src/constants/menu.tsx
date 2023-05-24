@@ -32,6 +32,11 @@ export const menu: IMenu[] = [
         label: <Link to='/levels'>Уровни подготовки</Link>,
     },
     {
+        key: '/teachers',
+        locations: ['teachers'],
+        label: <Link to='/teachers'>Учителя</Link>,
+    },
+    {
         key: '',
         label: <Button danger onClick={() => user.logout()}>Выйти</Button>,
     }

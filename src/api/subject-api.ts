@@ -3,6 +3,7 @@ import {ISubject} from "../types/subject";
 
 class SubjectApi {
     getSubjects = () => request.get<ISubject[]>('/subjects')
+
     getSubject = (subjectId: number) => request.get<ISubject>('/subject/'+subjectId)
 
     createSubject = (name: string, office: string) => request.post<ISubject>('/subject/create', {
@@ -18,4 +19,5 @@ class SubjectApi {
     })
 }
 
+// eslint-disable-next-line
 export default new SubjectApi()

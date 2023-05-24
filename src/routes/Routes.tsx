@@ -8,6 +8,7 @@ import Groups from "../pages/Groups/Groups";
 import Authorization from "../pages/Authorization/Authorization";
 import Subjects from "../pages/Subjects/Subjects";
 import Levels from "../pages/Levels/Levels";
+import Teachers from "../pages/Teachers/Teachers";
 
 const Routes = () => {
     return useRoutes([
@@ -34,6 +35,11 @@ const Routes = () => {
         {
             path: '/levels',
             element: <Authorized component={<Levels/>}/>
+
+        },
+        {
+            path: '/teachers',
+            element: <Authorized component={<Teachers/>}/>
 
         },
         {

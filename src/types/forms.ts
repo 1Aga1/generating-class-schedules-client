@@ -14,7 +14,8 @@ export interface IGroupForm {
 
 export interface ISubjectForm {
     name: string,
-    office: string
+    office: string,
+    teacherId: number
 }
 
 export interface ILevelForm {
@@ -25,6 +26,6 @@ export interface ILevelForm {
     }[]
 }
 
-export interface IAddGroupForm {
-    groupId: number
+export interface ITeacherForm {
+    fullname: string,
 }
