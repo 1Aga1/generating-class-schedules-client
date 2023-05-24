@@ -6,12 +6,12 @@ class SubjectApi {
 
     getSubject = (subjectId: number) => request.get<ISubject>('/subject/'+subjectId)
 
-    createSubject = (name: string, office: string) => request.post<ISubject>('/subject/create', {
-        name, office
+    createSubject = (name: string, office: string, teacher_id: number) => request.post<ISubject>('/subject/create', {
+        name, office, teacher_id
     })
 
-    editSubject = (subject_id: number, name: string, office: string) => request.post<ISubject>('/subject/edit', {
-        subject_id, name, office
+    editSubject = (subject_id: number, name: string, office: string, teacher_id: number) => request.post<ISubject>('/subject/edit', {
+        subject_id, name, office, teacher_id
     })
 
     removeSubject = (subject_id: number) => request.delete('/subject/remove', {

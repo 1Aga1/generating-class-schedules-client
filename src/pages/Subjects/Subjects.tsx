@@ -34,7 +34,7 @@ const Subjects = () => {
 
     const createSubject = (data: ISubjectForm) => {
         setLoadingButton(true);
-        SubjectApi.createSubject(data.name, data.office).then(res => {
+        SubjectApi.createSubject(data.name, data.office, data.teacherId).then(res => {
             setTableData([...tableData, {
                 key: res.data.id,
                 name: res.data.name,
@@ -50,7 +50,7 @@ const Subjects = () => {
 
     const editSubject = (data: ISubjectForm) => {
         setLoadingButton(true);
-        SubjectApi.editSubject(editSubjectId, data.name, data.office).then(res => {
+        SubjectApi.editSubject(editSubjectId, data.name, data.office, data.teacherId).then(res => {
             setTableData(tableData.map(item => {
                 return item.key === editSubjectId
                     ?

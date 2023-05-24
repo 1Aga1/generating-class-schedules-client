@@ -52,7 +52,6 @@ const SubjectModal: FC<ISubjectModalProps> = ({open, onClose, initialValues, onS
                 </Form.Item>
                 <Form.Item name='teacherId' label='Учитель' rules={[requiredFormItem]}>
                     <Select
-                        mode="multiple"
                         showSearch={false}
                         style={{ width: '100%' }}
                         placeholder="Выберите учителя"
