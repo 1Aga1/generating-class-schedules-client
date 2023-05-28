@@ -20,6 +20,8 @@ class SchedulesApi {
     })
 
     downloadSchedule = (scheduleId: number) => request.getBlob<Blob>('/document/'+scheduleId)
+
+    uploadSchedule = (formData: FormData) => request.post('/schedule/upload', formData)
 }
 // eslint-disable-next-line
 export default new SchedulesApi()

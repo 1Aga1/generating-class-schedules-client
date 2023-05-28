@@ -1,5 +1,5 @@
-import React, {useEffect, useState} from 'react';
-import {Button, Card, message, Table, Typography} from "antd";
+import React, {useEffect, useRef, useState} from 'react';
+import {Button, Card, message, Space, Table, Tooltip, Typography} from "antd";
 import {getColumns, ITableDataType} from "./tableProps";
 import SchedulesApi from "../../api/schedules-api";
 import ScheduleModal from "../../components/ScheduleModal/ScheduleModal";
@@ -7,6 +7,7 @@ import {IScheduleForm} from "../../types/forms";
 import dayjs from "dayjs";
 import {saveBlobToFile} from "../../utils/saveBlobToFile";
 import schedulesApi from "../../api/schedules-api";
+import {UploadOutlined} from "@ant-design/icons";
 
 const {Title} = Typography;
 
@@ -17,6 +18,8 @@ const Schedules = () => {
     const [loadingButton, setLoadingButton] = useState<boolean>(false);
     const [scheduleData, setScheduleData] = useState<IScheduleForm>();
     const [editScheduleId, setEditScheduleId] = useState<number>(0);
+
+    const fileInput = useRef<HTMLInputElement | null>(null)
 
     const fetchSchedules = () => {
         setLoadingTable(true);
@@ -105,19 +108,45 @@ const Schedules = () => {
         message.destroy();
     }
 
+    const onUploadSchedule = async (file: any) => {
+        message.loading('Создание расписания');
+        const formData = new FormData();
+
+        formData.append('file', file);
+        try {
+            await SchedulesApi.uploadSchedule(formData);
+            window.location.reload();
+            message.success('Расписание создано');
+        }
+        catch (e) {
+            message.destroy();
+            message.error('Ошибка загрузки файла!');
+        }
+    };
+
     useEffect(() => {
         fetchSchedules()
     }, [])
 
     return (
         <>
+            <input type='file' id='file' ref={fileInput} accept={'.xls, .xlsx'} style={{display: "none"}} onChange={e => onUploadSchedule(e.target.files![0])}/>
             <Card>
                 <div className='pageHeader'>
                     <Title level={4}>Расписания</Title>
-                    <Button type="primary" onClick={() => {
-                        setScheduleData(undefined)
-                        setShowModal(true)
-                    }}>Создать расписание</Button>
+                    <Space>
+                        <Button type="primary"
+                                onClick={() => {setScheduleData(undefined); setShowModal(true)}}
+                        >
+                            Создать расписание
+                        </Button>
+                        <Tooltip title="Загрузить из файла">
+                            <Button
+                                onClick={() => fileInput.current?.click()}
+                                icon={<UploadOutlined />}
+                            ></Button>
+                        </Tooltip>
+                    </Space>
                 </div>
                 <Table
                     columns={getColumns(onEditSchedule, removeSchedule, downloadSchedule)}
