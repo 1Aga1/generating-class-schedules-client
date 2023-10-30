@@ -22,7 +22,7 @@ const Groups = () => {
                 return {
                     key: item.id,
                     name: item.name,
-                    level: item.level.text,
+                    subjects: item.subjects
                 }
             }))
         }).catch((e) => {
@@ -33,11 +33,11 @@ const Groups = () => {
 
     const createGroup = (data: IGroupForm) => {
         setLoadingButton(true);
-        GroupApi.createGroup(data.levelId, data.name).then(res => {
+        GroupApi.createGroup(data.name).then(res => {
             setTableData([...tableData, {
                 key: res.data.id,
                 name: res.data.name,
-                level: res.data.level.text,
+                subjects: res.data.subjects
             }])
             setShowModal(false);
         }).catch(e => {
@@ -48,14 +48,14 @@ const Groups = () => {
 
     const editGroup = (data: IGroupForm) => {
         setLoadingButton(true);
-        GroupApi.editGroup(editGroupId, data.levelId, data.name).then(res => {
+        GroupApi.editGroup(editGroupId, data.name).then(res => {
             setTableData(tableData.map(item => {
                 return item.key === editGroupId
                     ?
                     {
                         key: res.data.id,
                         name: res.data.name,
-                        level: res.data.level.text,
+                        subjects: res.data.subjects
                     }
                     : item
             }))
@@ -71,8 +71,13 @@ const Groups = () => {
         message.loading('Загрузка данных');
         GroupApi.getGroup(groupId).then(res => {
             setGroupData({
-                levelId: res.data.level.id,
-                name: res.data.name
+                id: res.data.id,
+                name: res.data.name,
+                subjects: res.data.subjects.map(subject => {
+                    return {
+                        value: subject.subject.id,
+                    }
+                })
             });
             message.destroy();
             setShowModal(true);

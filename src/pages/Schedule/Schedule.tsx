@@ -1,29 +1,24 @@
 import React, {useEffect, useState} from 'react';
-import {Button, Card, Descriptions, message, Select, Skeleton, Tooltip, Typography} from "antd";
+import {Card, Descriptions, message, Select, Skeleton, Typography} from "antd";
 import {useNavigate, useParams} from "react-router-dom";
 import SchedulesApi from "../../api/schedules-api";
 import {ISchedule} from "../../types/schedule";
 import dayjs from "dayjs";
 import GroupApi from "../../api/group-api";
-import {IGroup} from "../../types/group";
+import {IGroup, IGroupSubject} from "../../types/group";
 import style from './Schedule.module.scss';
-import LevelApi from "../../api/level-api";
-import {ILevelSubject} from "../../types/level";
 import ScheduleParamApi from "../../api/scheduleParam-api";
-import {DownloadOutlined} from "@ant-design/icons";
-import schedulesApi from "../../api/schedules-api";
-import {saveBlobToFile} from "../../utils/saveBlobToFile";
 
 const {Title} = Typography;
 
 const Schedule = () => {
     const {number} = useParams();
     const navigate = useNavigate();
-    const subjectNumber = [1, 2, 3, 4, 5, 6, 7, 8];
+    const subjectNumber = [1, 2, 3, 4, 5, 6];
 
     const [scheduleData, setScheduleData] = useState<ISchedule>();
     const [groupList, setGroupList] = useState<IGroup[]>();
-    const [levelsSubjects, setLevelsSubjects] = useState<ILevelSubject[]>();
+    const [groupsSubjects, setGroupsSubjects] = useState<IGroupSubject[]>();
 
     const fetchSchedule = async () => {
         try {
@@ -46,8 +41,8 @@ const Schedule = () => {
 
     const fetchLevelSubjects = async () => {
         try {
-            const res = await LevelApi.getLevelSubjects();
-            setLevelsSubjects(res.data);
+            const res = await GroupApi.getGroupSubjects();
+            setGroupsSubjects(res.data);
         } catch (e) {
             message.error('Ошибка получения списка предметов!');
         }
@@ -76,19 +71,6 @@ const Schedule = () => {
         }
     }
 
-    const downloadSchedule = async () => {
-        message.loading('Выгрузка файла')
-
-        try {
-            const res = await schedulesApi.downloadSchedule(scheduleData?.id!)
-            saveBlobToFile(res.data, `Расписание на ${dayjs(scheduleData?.date).format('DD.MM.YYYY')}.docx`)
-        } catch (_) {
-            message.error('Ошибка выгрузки документа!')
-        }
-
-        message.destroy();
-    }
-
     return (
         <>
             <Card>
@@ -98,18 +80,10 @@ const Schedule = () => {
                             ? <Title level={4}>Расписание на {dayjs(scheduleData?.date).format('DD.MM.YYYY')}</Title>
                             : <Skeleton.Input active />
                     }
-                    {
-                        scheduleData
-                            ?
-                            <Tooltip title='Выгрузить в Word'>
-                                <Button onClick={downloadSchedule} icon={<DownloadOutlined/>}></Button>
-                            </Tooltip>
-                            : <Skeleton.Input active />
-                    }
                 </div>
                 <div className={style.schedule}>
                     {
-                        scheduleData && groupList && levelsSubjects
+                        scheduleData && groupList && groupsSubjects
                             ?
                             groupList?.map((group, index) => (
                                 <Descriptions title={group.name} className={style.groupCard} key={index} column={1}>
@@ -121,12 +95,12 @@ const Schedule = () => {
                                                     style={{width: '100%'}}
                                                     mode="multiple"
                                                     options={
-                                                        levelsSubjects?.filter(subject =>
-                                                            subject.level === group.level.id)
+                                                        groupsSubjects?.filter(subject =>
+                                                            subject.group_id === group.id)
                                                         .map(subject => {
                                                             return {
                                                                 value: subject.subject.id,
-                                                                label: subject.subject.name + ' - ' + subject.subject.office,
+                                                                label: subject.subject.name,
                                                                 number: item,
                                                                 groupId: group.id
                                                             }

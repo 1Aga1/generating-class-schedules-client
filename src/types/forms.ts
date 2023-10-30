@@ -8,21 +8,16 @@ export interface IScheduleForm {
 }
 
 export interface IGroupForm {
-    levelId: number,
-    name: string
+    id: number
+    name: string,
+    subjects?: {
+        value: number,
+    }[]
 }
 
 export interface ISubjectForm {
     name: string,
     teacherId: number
-}
-
-export interface ILevelForm {
-    id: number,
-    text: string,
-    subjects?: {
-        value: number,
-    }[]
 }
 
 export interface ITeacherForm {

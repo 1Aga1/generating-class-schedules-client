@@ -1,8 +1,8 @@
-import {Button, DatePicker, Form, Input, Modal, Select} from 'antd';
+import {Button, Form, Input, message, Modal, Select} from 'antd';
 import React, {FC, useEffect, useState} from 'react';
 import {IGroupModalProps} from "./IGroupModalProps";
-import LevelApi from "../../api/level-api";
-import {Simulate} from "react-dom/test-utils";
+import SubjectApi from "../../api/subject-api";
+import GroupApi from "../../api/group-api";
 
 const requiredFormItem = {
     required: true,
@@ -10,26 +10,55 @@ const requiredFormItem = {
 }
 
 interface IOptions {
-    label: string,
     value: number
+    label: string,
 }
 
 const GroupModal: FC<IGroupModalProps> = ({open, onClose, initialValues, onSubmit, submitText, titleText, loading}) => {
-    const [options, setOptions] = useState<IOptions[]>()
+    const [options, setOptions] = useState<IOptions[]>();
+    const [loadingField, setLoadingField] = useState<boolean>(false);
+    const [disabledField, setDisabledField] = useState<boolean>(false);
 
-    const fetchLevels = async () => {
-        const res = await LevelApi.getLevels();
-        setOptions(res.data.map(level => {
-            return {
-                label: level.text,
-                value: level.id
-            }
-        }));
+    const fetchSubjects = () => {
+        SubjectApi.getSubjects().then(res => {
+            setOptions(res.data.map(subject => {
+                return {
+                    value: subject.id,
+                    label: subject.name + ' - ' + subject.teacher.fullname
+                }
+            }));
+        }).catch((e) => {
+            message.error('Ошибка загрузки предметов!');
+        });
+    };
+
+    const addSubject = (value: number) => {
+        setDisabledField(true);
+        setLoadingField(true);
+        GroupApi.addSubject(initialValues?.id!, value).then(
+            message.success('Предмет добавлен')
+        ).catch((e) => {
+            message.error('Ошибка добавления!');
+        });
+        setLoadingField(false);
+        setDisabledField(false);
+    }
+
+    const removeSubject = (value: number) => {
+        setDisabledField(true);
+        setLoadingField(true);
+        GroupApi.removeSubject(initialValues?.id!, value).then(
+            message.success('Предмет удален')
+        ).catch((e) => {
+            message.error('Ошибка удаления!');
+        });
+        setLoadingField(false);
+        setDisabledField(false);
     }
 
     useEffect(() => {
-        fetchLevels().then();
-    }, [])
+        if (initialValues) fetchSubjects();
+    }, [initialValues])
 
     return (
         <Modal
@@ -42,14 +71,24 @@ const GroupModal: FC<IGroupModalProps> = ({open, onClose, initialValues, onSubmi
             footer={null}
         >
             <Form labelCol={{span: 8}} wrapperCol={{span: 16}} labelAlign='left' onFinish={onSubmit} initialValues={initialValues}>
-                <Form.Item name='levelId' label='Уровень подготовки' rules={[requiredFormItem]}>
-                    <Select
-                        options={options}
-                    />
-                </Form.Item>
                 <Form.Item name='name' label='Название' rules={[requiredFormItem]}>
                     <Input/>
                 </Form.Item>
+                {
+                    initialValues &&
+                    <Form.Item name='subjects' label='Предметы'>
+                        <Select
+                            mode="multiple"
+                            style={{ width: '100%' }}
+                            placeholder="Выберите предмет"
+                            onSelect={addSubject}
+                            onDeselect={removeSubject}
+                            options={options}
+                            loading={loadingField}
+                            disabled={disabledField}
+                        />
+                    </Form.Item>
+                }
                 <Form.Item style={{display: 'flex', justifyContent: 'right'}}>
                     <Button htmlType='submit' type='primary' loading={loading}>{submitText}</Button>
                 </Form.Item>

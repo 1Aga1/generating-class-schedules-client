@@ -27,11 +27,6 @@ export const menu: IMenu[] = [
         label: <Link to='/subjects'>Предметы</Link>,
     },
     {
-        key: '/levels',
-        locations: ['levels'],
-        label: <Link to='/levels'>Уровни подготовки</Link>,
-    },
-    {
         key: '/teachers',
         locations: ['teachers'],
         label: <Link to='/teachers'>Учителя</Link>,

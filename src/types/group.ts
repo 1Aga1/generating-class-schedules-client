@@ -1,8 +1,14 @@
 export interface IGroup {
     id: number,
     name: string,
-    level: {
+    subjects: IGroupSubject[]
+}
+
+export interface IGroupSubject {
+    id: number
+    group_id: number,
+    subject: {
         id: number,
-        text: string
-    },
+        name: string,
+    }
 }
