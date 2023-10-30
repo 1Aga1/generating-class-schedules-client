@@ -6,7 +6,6 @@ export interface ITableDataType {
     key: number,
     name: string,
     teacherFullName: string,
-    office: string,
 }
 
 export const getColumns = (
@@ -23,11 +22,6 @@ export const getColumns = (
                 title: 'Учитель',
                 dataIndex: 'teacherFullName',
                 key: 'teacherFullName',
-            },
-            {
-                title: 'Кабинет',
-                dataIndex: 'office',
-                key: 'office',
             },
             {
                 title: 'Действия',

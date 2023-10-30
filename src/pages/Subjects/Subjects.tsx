@@ -34,12 +34,11 @@ const Subjects = () => {
 
     const createSubject = (data: ISubjectForm) => {
         setLoadingButton(true);
-        SubjectApi.createSubject(data.name, data.office, data.teacherId).then(res => {
+        SubjectApi.createSubject(data.name, data.teacherId).then(res => {
             setTableData([...tableData, {
                 key: res.data.id,
                 name: res.data.name,
                 teacherFullName: res.data.teacher.fullname,
-                office: res.data.office,
             }])
             setShowModal(false);
         }).catch(e => {
@@ -50,7 +49,7 @@ const Subjects = () => {
 
     const editSubject = (data: ISubjectForm) => {
         setLoadingButton(true);
-        SubjectApi.editSubject(editSubjectId, data.name, data.office, data.teacherId).then(res => {
+        SubjectApi.editSubject(editSubjectId, data.name, data.teacherId).then(res => {
             setTableData(tableData.map(item => {
                 return item.key === editSubjectId
                     ?
@@ -58,7 +57,6 @@ const Subjects = () => {
                         key: res.data.id,
                         name: res.data.name,
                         teacherFullName: res.data.teacher.fullname,
-                        office: res.data.office,
                     }
                     : item
             }))
@@ -75,7 +73,6 @@ const Subjects = () => {
         SubjectApi.getSubject(subjectId).then(res => {
             setSubjectData({
                 name: res.data.name,
-                office: res.data.office,
                 teacherId: res.data.teacher.id
             });
             message.destroy();

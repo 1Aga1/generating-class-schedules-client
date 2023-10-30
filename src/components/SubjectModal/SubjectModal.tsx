@@ -47,9 +47,6 @@ const SubjectModal: FC<ISubjectModalProps> = ({open, onClose, initialValues, onS
                 <Form.Item name='name' label='Название' rules={[requiredFormItem]}>
                     <Input/>
                 </Form.Item>
-                <Form.Item name='office' label='Кабинет' rules={[requiredFormItem]}>
-                    <Input/>
-                </Form.Item>
                 <Form.Item name='teacherId' label='Учитель' rules={[requiredFormItem]}>
                     <Select
                         showSearch={false}

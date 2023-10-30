@@ -14,7 +14,6 @@ export interface IGroupForm {
 
 export interface ISubjectForm {
     name: string,
-    office: string,
     teacherId: number
 }
 
