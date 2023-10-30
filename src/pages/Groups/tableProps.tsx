@@ -5,6 +5,7 @@ import {DeleteOutlined, EditOutlined} from "@ant-design/icons";
 export interface ITableDataType {
     key: number,
     name: string,
+    course: number,
     subjects: {
         id: number
         subject: {
@@ -19,6 +20,11 @@ export const getColumns = (
     onRemove: (id: number) => void
 ) => {
     return [
+        {
+            title: 'Курс',
+            dataIndex: 'course',
+            key: 'course',
+        },
         {
             title: 'Название',
             dataIndex: 'name',

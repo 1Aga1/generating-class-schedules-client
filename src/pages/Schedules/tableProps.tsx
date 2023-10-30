@@ -34,9 +34,6 @@ export const getColumns = (
                 render: (_, record) => (
                     <Space size="small">
                         <Button onClick={() => onEdit(record.key)} icon={<EditOutlined/>}></Button>
-                        <Tooltip title='Выгрузить в Word'>
-                            <Button onClick={() => onDownload(record.key)} icon={<DownloadOutlined/>}></Button>
-                        </Tooltip>
                         <Button danger type='primary' onClick={() => onRemove(record.key)} icon={<DeleteOutlined/>}></Button>
                     </Space>
                 ),

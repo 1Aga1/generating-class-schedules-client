@@ -10,6 +10,7 @@ export interface IScheduleForm {
 export interface IGroupForm {
     id: number
     name: string,
+    course: number
     subjects?: {
         value: number,
     }[]

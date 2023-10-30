@@ -100,7 +100,7 @@ const Schedule = () => {
                                                         .map(subject => {
                                                             return {
                                                                 value: subject.subject.id,
-                                                                label: subject.subject.name,
+                                                                label: subject.subject.name + ' - ' + subject.subject.teacher,
                                                                 number: item,
                                                                 groupId: group.id
                                                             }

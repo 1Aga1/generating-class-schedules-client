@@ -14,10 +14,31 @@ interface IOptions {
     label: string,
 }
 
+const courseOptions: IOptions[] = [
+    {
+        value: 1,
+        label: '1 Курс'
+    },
+    {
+        value: 2,
+        label: '2 Курс'
+    },
+    {
+        value: 3,
+        label: '3 Курс'
+    },
+    {
+        value: 4,
+        label: '4 Курс'
+    },
+]
+
+
 const GroupModal: FC<IGroupModalProps> = ({open, onClose, initialValues, onSubmit, submitText, titleText, loading}) => {
     const [options, setOptions] = useState<IOptions[]>();
     const [loadingField, setLoadingField] = useState<boolean>(false);
     const [disabledField, setDisabledField] = useState<boolean>(false);
+
 
     const fetchSubjects = () => {
         SubjectApi.getSubjects().then(res => {
@@ -73,6 +94,13 @@ const GroupModal: FC<IGroupModalProps> = ({open, onClose, initialValues, onSubmi
             <Form labelCol={{span: 8}} wrapperCol={{span: 16}} labelAlign='left' onFinish={onSubmit} initialValues={initialValues}>
                 <Form.Item name='name' label='Название' rules={[requiredFormItem]}>
                     <Input/>
+                </Form.Item>
+                <Form.Item name='course' label='course'>
+                    <Select
+                        style={{ width: '100%' }}
+                        placeholder="Выберите курс"
+                        options={courseOptions}
+                    />
                 </Form.Item>
                 {
                     initialValues &&

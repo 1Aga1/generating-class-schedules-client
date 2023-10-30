@@ -7,10 +7,10 @@ class GroupApi {
 
     getGroup = (groupId: number) => request.get<IGroup>('/group/'+groupId)
 
-    createGroup = (name: string) => request.post<IGroup>('/group/create', {name})
+    createGroup = (name: string, course: number) => request.post<IGroup>('/group/create', {name, course})
 
-    editGroup = (group_id: number, name: string) => request.post<IGroup>('/group/edit', {
-        group_id, name
+    editGroup = (group_id: number, name: string, course: number) => request.post<IGroup>('/group/edit', {
+        group_id, name, course
     })
 
     removeGroup = (group_id: number) => request.delete('/group/remove', {

@@ -22,6 +22,7 @@ const Groups = () => {
                 return {
                     key: item.id,
                     name: item.name,
+                    course: item.course,
                     subjects: item.subjects
                 }
             }))
@@ -33,10 +34,11 @@ const Groups = () => {
 
     const createGroup = (data: IGroupForm) => {
         setLoadingButton(true);
-        GroupApi.createGroup(data.name).then(res => {
+        GroupApi.createGroup(data.name, data.course).then(res => {
             setTableData([...tableData, {
                 key: res.data.id,
                 name: res.data.name,
+                course: res.data.course,
                 subjects: res.data.subjects
             }])
             setShowModal(false);
@@ -48,13 +50,14 @@ const Groups = () => {
 
     const editGroup = (data: IGroupForm) => {
         setLoadingButton(true);
-        GroupApi.editGroup(editGroupId, data.name).then(res => {
+        GroupApi.editGroup(editGroupId, data.name, data.course).then(res => {
             setTableData(tableData.map(item => {
                 return item.key === editGroupId
                     ?
                     {
                         key: res.data.id,
                         name: res.data.name,
+                        course: res.data.course,
                         subjects: res.data.subjects
                     }
                     : item
@@ -73,6 +76,7 @@ const Groups = () => {
             setGroupData({
                 id: res.data.id,
                 name: res.data.name,
+                course: res.data.course,
                 subjects: res.data.subjects.map(subject => {
                     return {
                         value: subject.subject.id,
