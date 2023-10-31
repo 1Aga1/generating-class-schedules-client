@@ -9,5 +9,6 @@ export interface IScheduleParams {
     group_id: number,
     schedule_id: number,
     subject_id: number,
-    number: number
+    number: number,
+    office: number
 }

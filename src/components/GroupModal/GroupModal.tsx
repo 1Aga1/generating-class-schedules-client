@@ -95,7 +95,7 @@ const GroupModal: FC<IGroupModalProps> = ({open, onClose, initialValues, onSubmi
                 <Form.Item name='name' label='Название' rules={[requiredFormItem]}>
                     <Input/>
                 </Form.Item>
-                <Form.Item name='course' label='course'>
+                <Form.Item name='course' label='Курс'>
                     <Select
                         style={{ width: '100%' }}
                         placeholder="Выберите курс"

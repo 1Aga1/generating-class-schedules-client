@@ -1,12 +1,26 @@
 .schedule {
   display: flex;
   flex-wrap: wrap;
+  justify-content: space-around;
   .groupCard {
-    width: 200px;
+    width: 40%;
     margin: 20px;
     text-align: center;
     .card {
       padding: 5px 0;
+      .subject {
+        display: flex;
+        align-items: center;
+        width: 100%;
+        .office__list {
+          display: flex;
+          flex-wrap: wrap;
+          justify-content: center;
+          .office__input {
+            margin: 5px 0;
+          }
+        }
+      }
     }
   }
 }
