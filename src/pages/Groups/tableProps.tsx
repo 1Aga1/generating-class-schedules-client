@@ -1,18 +1,13 @@
 import {ColumnsType} from "antd/es/table";
 import {Button, Space} from "antd";
 import {DeleteOutlined, EditOutlined} from "@ant-design/icons";
+import {IGroupSubject} from "../../types/group";
 
 export interface ITableDataType {
     key: number,
     name: string,
     course: number,
-    subjects: {
-        id: number
-        subject: {
-            id: number,
-            name: string,
-        }
-    }[]
+    subjects: IGroupSubject[]
 }
 
 export const getColumns = (
@@ -37,7 +32,7 @@ export const getColumns = (
             render: (_, {subjects}) => {
                 return subjects && subjects.length > 0 ? <>
                     {subjects.map(item => (
-                        <div key={item.subject.id}>{item.subject.name}</div>
+                        <div key={item.subject.id}>{item.subject.name} - {item.subject.teacher}</div>
                     ))}
                 </> : ''
             }
