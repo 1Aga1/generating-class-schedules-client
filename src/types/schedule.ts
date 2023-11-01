@@ -1,6 +1,7 @@
 export interface ISchedule {
     id: number,
     date: any,
+    visible: boolean,
     params: IScheduleParams[],
 }
 

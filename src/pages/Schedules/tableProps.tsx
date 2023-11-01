@@ -1,18 +1,19 @@
 import {ColumnsType} from "antd/es/table";
 import {Button, Space, Tooltip} from "antd";
 import dayjs from "dayjs";
-import {DeleteOutlined, DownloadOutlined, EditOutlined} from "@ant-design/icons";
+import {DeleteOutlined, EditOutlined, EyeInvisibleOutlined, EyeOutlined} from "@ant-design/icons";
 import {Link} from "react-router-dom";
 
 export interface ITableDataType {
     key: number,
     date: any,
+    visible: boolean
 }
 
 export const getColumns = (
     onEdit: (id: number) => void,
     onRemove: (id: number) => void,
-    onDownload: (id: number) => void,
+    onChangeVisibility: (id: number, visible: boolean) => void,
 ) => {
     return [
             {
@@ -33,6 +34,11 @@ export const getColumns = (
                 key: 'action',
                 render: (_, record) => (
                     <Space size="small">
+                        <Tooltip title={record.visible ? 'Скрыть' : 'Показать'}>
+                            <Button onClick={() => onChangeVisibility(record.key, !record.visible)} icon={
+                                record.visible ? <EyeOutlined />  : <EyeInvisibleOutlined />
+                            }></Button>
+                        </Tooltip>
                         <Button onClick={() => onEdit(record.key)} icon={<EditOutlined/>}></Button>
                         <Button danger type='primary' onClick={() => onRemove(record.key)} icon={<DeleteOutlined/>}></Button>
                     </Space>

@@ -21,18 +21,20 @@ const Schedules = () => {
 
     const fileInput = useRef<HTMLInputElement | null>(null)
 
-    const fetchSchedules = () => {
+    const fetchSchedules = async () => {
         setLoadingTable(true);
-        SchedulesApi.getSchedules().then(res => {
+        try {
+            const res = await SchedulesApi.getSchedules()
             setTableData(res.data.map(item => {
                 return {
                     key: item.id,
-                    date: item.date
+                    date: item.date,
+                    visible: item.visible,
                 }
             }))
-        }).catch((e) => {
+        } catch(e) {
             message.error('Ошибка получения данных!');
-        });
+        }
         setLoadingTable(false);
     };
 
@@ -41,7 +43,8 @@ const Schedules = () => {
         SchedulesApi.createSchedule(data.date).then(res => {
             setTableData([...tableData, {
                 key: res.data.id,
-                date: res.data.date
+                date: res.data.date,
+                visible: res.data.visible,
             }])
             setShowModal(false);
         }).catch(e => {
@@ -58,7 +61,8 @@ const Schedules = () => {
                 ?
                     {
                         key: res.data.id,
-                        date: res.data.date
+                        date: res.data.date,
+                        visible: res.data.visible,
                     }
                 : item
             }))
@@ -95,19 +99,6 @@ const Schedules = () => {
         })
     };
 
-    const downloadSchedule = async (scheduleId: number) => {
-        message.loading('Выгрузка файла')
-
-        try {
-            const res = await schedulesApi.downloadSchedule(scheduleId)
-            saveBlobToFile(res.data, `Расписание на ${dayjs(tableData.find(item => item.key === scheduleId)?.date).format('DD.MM.YYYY')}.docx`)
-        } catch (_) {
-            message.error('Ошибка выгрузки документа!')
-        }
-
-        message.destroy();
-    }
-
     const onUploadSchedule = async (file: any) => {
         message.loading('Создание расписания');
         const formData = new FormData();
@@ -124,8 +115,30 @@ const Schedules = () => {
         }
     };
 
+    const onChangeVisibility = async (scheduleId: number, visible: boolean) => {
+        message.loading('Смена видимости расписания')
+        try {
+            const res = await SchedulesApi.changeVisibility(scheduleId, visible);
+            setTableData(tableData.map(item => {
+                return item.key === editScheduleId
+                    ?
+                    {
+                        key: res.data.id,
+                        date: res.data.date,
+                        visible: res.data.visible,
+                    }
+                    : item
+            }))
+            message.destroy();
+            message.success(visible ? 'Расписание отображено' : 'Расписание скрыто');
+        } catch (e) {
+            message.destroy();
+            message.error('Ошибка смены видимости расписания!');
+        }
+    }
+
     useEffect(() => {
-        fetchSchedules()
+        fetchSchedules().then()
     }, [])
 
     return (
@@ -149,7 +162,7 @@ const Schedules = () => {
                     </Space>
                 </div>
                 <Table
-                    columns={getColumns(onEditSchedule, removeSchedule, downloadSchedule)}
+                    columns={getColumns(onEditSchedule, removeSchedule, onChangeVisibility)}
                     dataSource={tableData}
                     rowClassName='tableRow'
                     loading={loadingTable}

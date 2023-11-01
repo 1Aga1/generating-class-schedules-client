@@ -19,9 +19,11 @@ class SchedulesApi {
         schedule_id
     })
 
-    downloadSchedule = (scheduleId: number) => request.getBlob<Blob>('/document/'+scheduleId)
-
     uploadSchedule = (formData: FormData) => request.post('/schedule/upload', formData)
+
+    changeVisibility = (schedule_id: number, visible: boolean) => request.post<ISchedule>('/schedule/change_visibility', {
+        schedule_id, visible
+    })
 }
 // eslint-disable-next-line
 export default new SchedulesApi()
