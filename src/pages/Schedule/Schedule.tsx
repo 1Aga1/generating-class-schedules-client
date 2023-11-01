@@ -26,36 +26,36 @@ const Schedule = () => {
 
     const [selectedSubject, setSelectedSubject] = useState<{value: any, option: any}>();
 
-    const fetchSchedule = async () => {
-        try {
-            const res = await SchedulesApi.getSchedule(number!);
-            setScheduleData(res.data);
-            setScheduleParams(res.data.params);
-        } catch (e) {
-            message.error('Ошибка получения данных!');
-            navigate('/schedules');
-        }
-    }
-
-    const fetchGroups = async () => {
-        try {
-            const res = await GroupApi.getGroups();
-            setGroupList(res.data);
-        } catch (e) {
-            message.error('Ошибка получения списка классов!');
-        }
-    }
-
-    const fetchLevelSubjects = async () => {
-        try {
-            const res = await GroupApi.getGroupSubjects();
-            setGroupsSubjects(res.data);
-        } catch (e) {
-            message.error('Ошибка получения списка предметов!');
-        }
-    }
-
     useEffect(() => {
+        const fetchSchedule = async () => {
+            try {
+                const res = await SchedulesApi.getSchedule(number!);
+                setScheduleData(res.data);
+                setScheduleParams(res.data.params);
+            } catch (e) {
+                message.error('Ошибка получения данных!');
+                navigate('/schedules');
+            }
+        }
+
+        const fetchGroups = async () => {
+            try {
+                const res = await GroupApi.getGroups();
+                setGroupList(res.data);
+            } catch (e) {
+                message.error('Ошибка получения списка классов!');
+            }
+        }
+
+        const fetchLevelSubjects = async () => {
+            try {
+                const res = await GroupApi.getGroupSubjects();
+                setGroupsSubjects(res.data);
+            } catch (e) {
+                message.error('Ошибка получения списка предметов!');
+            }
+        }
+
         fetchSchedule().then();
         fetchGroups().then();
         fetchLevelSubjects().then();
@@ -95,7 +95,8 @@ const Schedule = () => {
         try {
             await ScheduleParamApi.removeParam(scheduleData?.id!, option.groupId, value, option.number)
             setScheduleParams(scheduleParams.filter(param =>
-                param.group_id !== option.groupId && param.subject_id !== value && param.number !== option.number))
+                param.subject_id !== value || param.number !== option.number
+            ))
         } catch (e) {
             message.error('Ошибка удаления предмета из расписания!');
         }
@@ -188,15 +189,14 @@ const Schedule = () => {
             title='Выбор кабинета'
             width={800}
             footer={null}
+            bodyStyle={{paddingTop: 30}}
             >
                 <Form labelCol={{span: 8}} wrapperCol={{span: 16}} labelAlign='left' onFinish={addSubject}>
                     <Form.Item name='office' label='Кабинет'>
                         <Input placeholder="Выведите кабинет"></Input>
                     </Form.Item>
-                    <Form.Item>
-                        <Form.Item style={{display: 'flex', justifyContent: 'right'}}>
-                            <Button htmlType='submit' type='primary' loading={loading}>Добавить</Button>
-                        </Form.Item>
+                    <Form.Item style={{display: 'flex', justifyContent: 'right'}}>
+                        <Button htmlType='submit' type='primary' loading={loading}>Добавить</Button>
                     </Form.Item>
                 </Form>
             </Modal>
