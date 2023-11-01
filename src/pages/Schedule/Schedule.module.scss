@@ -25,7 +25,7 @@
   }
 }
 
-@media (max-width: 742px) {
+@media (max-width: 1366px) {
   .schedule {
     .groupCard {
       width: 40%;
@@ -33,11 +33,44 @@
   }
 }
 
-@media (max-width: 524px) {
+@media (max-width: 1128px) {
+  .schedule {
+    .groupCard {
+      width: 45%;
+    }
+  }
+}
+
+@media (max-width: 1128px) {
+  .schedule {
+    .groupCard {
+      width: 80%;
+    }
+  }
+}
+
+@media (max-width: 566px) {
   .schedule {
     justify-content: center;
     .groupCard {
       width: 100%;
+    }
+  }
+}
+
+@media (max-width: 506px) {
+  .schedule {
+    .groupCard {
+      .card {
+        .subject {
+          flex-direction: column;
+          .office__list {
+            .office__input {
+              margin: 5px;
+            }
+          }
+        }
+      }
     }
   }
 }
