@@ -128,9 +128,12 @@ const Schedule = () => {
                                             <Descriptions.Item className={style.card} label={item} key={index}>
                                                 <div className={style.subject}>
                                                     <Select
-                                                        showSearch={false}
+                                                        showSearch
                                                         style={{width: '100%'}}
                                                         mode="multiple"
+                                                        filterOption={(input, option) =>
+                                                            option!.label.toLowerCase().indexOf(input.toLowerCase()) >= 0
+                                                        }
                                                         options={
                                                             groupsSubjects?.filter(subject =>
                                                                 subject.group_id === group.id)
