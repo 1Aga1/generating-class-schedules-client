@@ -35,7 +35,7 @@ const courseOptions: IOptions[] = [
 
 
 const GroupModal: FC<IGroupModalProps> = ({open, onClose, initialValues, onSubmit, submitText, titleText, loading}) => {
-    const [options, setOptions] = useState<IOptions[]>();
+    const [options, setOptions] = useState<IOptions[]>([]);
     const [loadingField, setLoadingField] = useState<boolean>(false);
     const [disabledField, setDisabledField] = useState<boolean>(false);
 
@@ -114,6 +114,9 @@ const GroupModal: FC<IGroupModalProps> = ({open, onClose, initialValues, onSubmi
                             options={options}
                             loading={loadingField}
                             disabled={disabledField}
+                            filterOption={(input, option) =>
+                                option!.label.toLowerCase().indexOf(input.toLowerCase()) >= 0
+                            }
                         />
                     </Form.Item>
                 }

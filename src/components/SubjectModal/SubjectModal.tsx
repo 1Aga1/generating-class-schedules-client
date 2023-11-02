@@ -49,10 +49,13 @@ const SubjectModal: FC<ISubjectModalProps> = ({open, onClose, initialValues, onS
                 </Form.Item>
                 <Form.Item name='teacherId' label='Учитель' rules={[requiredFormItem]}>
                     <Select
-                        showSearch={false}
+                        showSearch
                         style={{ width: '100%' }}
                         placeholder="Выберите учителя"
                         options={options}
+                        filterOption={(input, option) =>
+                            option!.label.toLowerCase().indexOf(input.toLowerCase()) >= 0
+                        }
                     />
                 </Form.Item>
                 <Form.Item style={{display: 'flex', justifyContent: 'right'}}>
