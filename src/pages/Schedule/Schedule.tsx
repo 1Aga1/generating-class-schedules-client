@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {Button, Card, Descriptions, Form, Input, InputNumber, message, Modal, Select, Skeleton, Typography} from "antd";
+import {Button, Card, Descriptions, Form, Input, message, Modal, Select, Skeleton, Typography} from "antd";
 import {useNavigate, useParams} from "react-router-dom";
 import SchedulesApi from "../../api/schedules-api";
 import {ISchedule, IScheduleParams} from "../../types/schedule";
@@ -8,6 +8,11 @@ import GroupApi from "../../api/group-api";
 import {IGroup, IGroupSubject} from "../../types/group";
 import style from './Schedule.module.scss';
 import ScheduleParamApi from "../../api/scheduleParam-api";
+
+const requiredFormItem = {
+    required: true,
+    message: ''
+}
 
 const {Title} = Typography;
 
@@ -67,17 +72,24 @@ const Schedule = () => {
         setOpenModal(true);
     }
 
-    const addSubject = async (data: {office: string}) => {
+    const addSubject = async (data: {first_half: string, office: string, sub_group: string}) => {
         setLoading(true);
         try {
-            const res = await ScheduleParamApi.addParam(scheduleData?.id!, selectedSubject?.option.groupId,
-                selectedSubject?.value, selectedSubject?.option.number, data.office)
+            const res = await ScheduleParamApi.addParam(scheduleData?.id!,
+                selectedSubject?.option.groupId,
+                data.sub_group,
+                selectedSubject?.value,
+                data.first_half,
+                selectedSubject?.option.number,
+                data.office)
 
             setScheduleParams([...scheduleParams, {
                 id: res.data.id,
-                group_id: res.data.group_id,
                 schedule_id: res.data.schedule_id,
+                group_id: res.data.group_id,
+                sub_group: res.data.sub_group,
                 subject_id: res.data.subject_id,
+                first_half: res.data.first_half,
                 number: res.data.number,
                 office: res.data.office
             }])
@@ -127,6 +139,22 @@ const Schedule = () => {
                                         subjectNumber.map((item, index) => (
                                             <Descriptions.Item className={style.card} label={item} key={index}>
                                                 <div className={style.subject}>
+                                                    <div className={style.office__list}>
+                                                        {
+                                                            scheduleParams
+                                                                .filter(param => param.number === item
+                                                                    && param.group_id === group.id)
+                                                                .map((param, index) => (
+                                                                        <Input
+                                                                            key={index}
+                                                                            defaultValue={param.first_half}
+                                                                            readOnly
+                                                                            className={style.office__input}
+                                                                        ></Input>
+                                                                    )
+                                                                )
+                                                        }
+                                                    </div>
                                                     <Select
                                                         showSearch
                                                         style={{width: '100%'}}
@@ -163,12 +191,17 @@ const Schedule = () => {
                                                                 .filter(param => param.number === item
                                                                     && param.group_id === group.id)
                                                                 .map((param, index) => (
-                                                                        <InputNumber
+                                                                        <Input
                                                                             key={index}
-                                                                            defaultValue={param.office}
+                                                                            defaultValue={
+                                                                            param.sub_group !== null
+                                                                                ?
+                                                                                `${param.office} ${param.sub_group} пг`
+                                                                                : param.office
+                                                                            }
                                                                             readOnly
                                                                             className={style.office__input}
-                                                                        ></InputNumber>
+                                                                        ></Input>
                                                                     )
                                                                 )
                                                         }
@@ -195,8 +228,14 @@ const Schedule = () => {
             bodyStyle={{paddingTop: 30}}
             >
                 <Form labelCol={{span: 8}} wrapperCol={{span: 16}} labelAlign='left' onFinish={addSubject}>
-                    <Form.Item name='office' label='Кабинет'>
-                        <Input placeholder="Выведите кабинет"></Input>
+                    <Form.Item name='first_half' label='Первая половина пары'>
+                        <Input placeholder="Введите значение для первой половины пары"></Input>
+                    </Form.Item>
+                    <Form.Item name='office' label='Кабинет' rules={[requiredFormItem]}>
+                        <Input placeholder="Введите кабинет"></Input>
+                    </Form.Item>
+                    <Form.Item name='sub_group' label='Подгруппа'>
+                        <Input placeholder="Введите подгруппу"></Input>
                     </Form.Item>
                     <Form.Item style={{display: 'flex', justifyContent: 'right'}}>
                         <Button htmlType='submit' type='primary' loading={loading}>Добавить</Button>
