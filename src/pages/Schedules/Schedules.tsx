@@ -7,7 +7,7 @@ import {IScheduleForm} from "../../types/forms";
 import dayjs from "dayjs";
 import {saveBlobToFile} from "../../utils/saveBlobToFile";
 import schedulesApi from "../../api/schedules-api";
-import {UploadOutlined} from "@ant-design/icons";
+import {DownloadOutlined, UploadOutlined} from "@ant-design/icons";
 
 const {Title} = Typography;
 
@@ -137,6 +137,19 @@ const Schedules = () => {
         }
     }
 
+    const downloadSchedule = async () => {
+        message.loading('Выгрузка файла')
+
+        try {
+            const res = await schedulesApi.downloadSchedule()
+            saveBlobToFile(res.data, `Расписание.xlsx`)
+        } catch (_) {
+            message.error('Ошибка выгрузки документа!')
+        }
+
+        message.destroy();
+    }
+
     useEffect(() => {
         fetchSchedules().then()
     }, [])
@@ -153,6 +166,12 @@ const Schedules = () => {
                         >
                             Создать расписание
                         </Button>
+                        <Tooltip title="Выгрузить расписание">
+                            <Button
+                                onClick={downloadSchedule}
+                                icon={<DownloadOutlined />}
+                            ></Button>
+                        </Tooltip>
                         <Tooltip title="Загрузить из файла">
                             <Button
                                 onClick={() => fileInput.current?.click()}

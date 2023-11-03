@@ -21,6 +21,8 @@ class SchedulesApi {
 
     uploadSchedule = (formData: FormData) => request.post('/schedule/upload', formData)
 
+    downloadSchedule = () => request.getBlob<Blob>('/schedules/urtk/download')
+
     changeVisibility = (schedule_id: number, visible: boolean) => request.post<ISchedule>('/schedule/change_visibility', {
         schedule_id, visible
     })
