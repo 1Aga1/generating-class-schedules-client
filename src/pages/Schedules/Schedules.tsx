@@ -139,6 +139,7 @@ const Schedules = () => {
 
     const downloadSchedule = async () => {
         message.loading('Выгрузка файла')
+        message.info('Выгрузка может длиться несколько минут')
 
         try {
             const res = await schedulesApi.downloadSchedule()
